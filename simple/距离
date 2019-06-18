@@ -1,0 +1,58 @@
+# Leetcode 1030
+    class Solution {
+    public:
+        vector<vector<int>> allCellsDistOrder(int R, int C, int r0, int c0) {
+            vector<vector<int>> ret;
+            vector<int> tmp;
+            int maxR, maxC, distance = 1, i, j;
+
+            maxR = (R - 1 - r0) > (r0 - 0) ? (R - 1 - r0) : (r0 - 0);
+            maxC = (C - 1 - c0) > (c0 - 0) ? (C - 1 - c0) : (c0 - 0);
+
+            tmp.push_back(r0);
+            tmp.push_back(c0);
+            ret.push_back(tmp);
+            tmp.clear();
+            while(distance <= maxR + maxC){
+                for(i = 0;  i <= distance; i++){
+                    j = distance - i;
+
+                    if(r0 + i < R && c0 + j < C){
+                        tmp.push_back(r0 + i);
+                        tmp.push_back(c0 + j);
+                        ret.push_back(tmp);
+                        tmp.clear();
+                    }
+
+                    if(r0 - i >= 0 && c0 - j >= 0){
+                        tmp.push_back(r0 - i);
+                        tmp.push_back(c0 - j);
+                        ret.push_back(tmp);
+                        tmp.clear();
+                    }
+
+                    if(i == 0 || j == 0)
+                        continue;
+
+                    if(r0 - i >= 0 && c0 + j < C){
+                        tmp.push_back(r0 - i);
+                        tmp.push_back(c0 + j);
+                        ret.push_back(tmp);
+                        tmp.clear();
+                    }
+
+                    if(r0 + i < R && c0 - j >= 0){
+                        tmp.push_back(r0 + i);
+                        tmp.push_back(c0 - j);
+                        ret.push_back(tmp);
+                        tmp.clear();
+                    }
+
+                }
+
+                distance++;
+            }
+
+            return ret;
+        }
+    };
