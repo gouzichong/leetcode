@@ -1,0 +1,21 @@
+# Leetcode 70
+    class Solution {
+    public:
+
+        int climbStairs(int n) {
+            int step1, step2, i;
+
+            step1 = 1;  //n = 1
+            step2 = 2;  //n = 2
+            if(n == 1)
+                return step1;
+
+            for(i = 3; i <= n; i++){
+                step2 = step1 + step2;
+                step1 = step2 - step1; 
+            }
+
+            return step2;
+        }
+
+    };
