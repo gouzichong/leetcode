@@ -1,0 +1,71 @@
+# Leetcode 207
+    class Solution {
+    public:
+        /*
+        bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+            vector<int> indegrees(numCourses);
+            for(int i = 0; i < prerequisites.size(); i++){
+                indegrees[prerequisites[i][0]]++;  //入度
+            }
+
+            queue<int> zeroIndegree;
+            for(int i = 0; i < numCourses; i++){
+                if(indegrees[i] == 0){
+                    zeroIndegree.push(i);
+                }
+            }
+
+            while(!zeroIndegree.empty()){
+                int curCourse = zeroIndegree.front();
+                zeroIndegree.pop();
+                for(int i = 0; i < prerequisites.size(); i++){
+                    if(prerequisites[i][1] == curCourse){
+                        indegrees[prerequisites[i][0]]--;
+                        if(indegrees[prerequisites[i][0]] == 0){
+                            zeroIndegree.push(prerequisites[i][0]);
+                        }
+                    }
+                }          
+            }
+
+            for(int i = 0; i < numCourses; i++){
+                if(indegrees[i] != 0){
+                    return false;
+                }
+            }
+            return true;
+        }
+        */
+
+        bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+            vector<int> indegrees(numCourses);
+            vector<vector<int>> graph(numCourses, vector<int>());
+
+            for(int i = 0; i < prerequisites.size(); i++){
+                indegrees[prerequisites[i][0]]++;  //入度
+                graph[prerequisites[i][1]].push_back(prerequisites[i][0]); //构建邻接图
+            }
+
+            queue<int> zeroIndegree;
+            for(int i = 0; i < numCourses; i++){
+                if(indegrees[i] == 0){
+                    zeroIndegree.push(i);
+                }
+            }
+
+            int count = 0;
+            while(!zeroIndegree.empty()){
+                int curCourse = zeroIndegree.front();
+                zeroIndegree.pop();
+                count++;
+                for(int i = 0; i < graph[curCourse].size(); i++){
+                    indegrees[graph[curCourse][i]]--;
+                    if(indegrees[graph[curCourse][i]] == 0){
+                        zeroIndegree.push(graph[curCourse][i]);
+                    }
+                }          
+            }
+
+            return count == numCourses; //当有环时，总有一些点入度不能减到0，因此不能完全bfs遍历
+        }
+    };
